@@ -20,3 +20,7 @@ Resources:
   http://bitlackeys.org/projects/quenya_32bit.tgz
   https://www.packtpub.com/networking-and-servers/learning-linux-binary-analysis
 
+Tested on 
+bob@bob-ThinkPad-X1-Carbon-3rd ~/Pen/elf-hijacking $ uname -a
+Linux bob-ThinkPad-X1-Carbon-3rd 4.4.0-21-generic #37-Ubuntu SMP Mon Apr 18 18:33:37 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+

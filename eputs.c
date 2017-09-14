@@ -1,3 +1,4 @@
+/* compile: gcc -c eputs.c */
 
 long _write (long fd, void *buf, unsigned long len)
 {
