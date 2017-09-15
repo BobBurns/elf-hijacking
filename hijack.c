@@ -149,12 +149,14 @@ int hijack_function(elfbin_t *target, Elf64_Addr new_vaddr, char *name)
 		return -1;
 	}
 
+	/* iterate through rela entries and find symbol */
 	for (i = 0; i < jmprel_size / sizeof(Elf64_Rela); i++)
 	{
-		if (!strcmp(&strtab[symtab[ELF64_R_SYM(jmprel->r_info)].st_name], name))
+		printf("symname: %s\n", &strtab[symtab[ELF64_R_SYM(jmprel[i].r_info)].st_name]);
+		if (!strcmp(&strtab[symtab[ELF64_R_SYM(jmprel[i].r_info)].st_name], name))
 		{
-			gotaddr = jmprel->r_offset;
-			gotoff = target->dataOff + (jmprel->r_offset - target->dataVaddr);
+			gotaddr = jmprel[i].r_offset;
+			gotoff = target->dataOff + (jmprel[i].r_offset - target->dataVaddr);
 			printf("[+] gotaddr: 0x%08x gotoff: 0x%08x\n", gotaddr, gotoff);
 			break;
 		}
