@@ -72,7 +72,7 @@ int relocate(elfbin_t *target, elfbin_t *relf, char *objname)
 	Elf32_Addr RelVal;
 	int TargetIndex;
 	//char *symName;
-	char *targname;
+	//char *targname;
 	int i, symstrndx, j;
 	Elf64_Addr objvaddr;
 	elfbin_t dst;
@@ -118,7 +118,7 @@ int relocate(elfbin_t *target, elfbin_t *relf, char *objname)
 		{
 			obj.shdr[i].sh_addr = objvaddr + secLen;
 			secLen += obj.shdr[i].sh_size;
-			printf("[+] Adjust Section Addr [%d] 0x%08x\n", i, obj.shdr[i].sh_addr);
+			printf("[+] Adjust Section Addr [%d] 0x%08lx\n", i, obj.shdr[i].sh_addr);
 		}
 		if (obj.shdr[i].sh_type == SHT_STRTAB && i != obj.ehdr->e_shstrndx)
 			symstrndx = i;
@@ -203,7 +203,7 @@ int relocate(elfbin_t *target, elfbin_t *relf, char *objname)
 	if ((objvaddr = inject_elf(target, ObjCode, totLen)) == -1)
 		return -1;
 
-	printf("[+] Injected code at = 0x%08x\n", objvaddr);
+	printf("[+] Injected code at = 0x%08lx\n", objvaddr);
 	/* load elf with object code in it */
 
 	if (load_target(TMP, &dst) == -1)

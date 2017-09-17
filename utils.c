@@ -20,7 +20,7 @@ int ElfReload(elfbin_t *elf)
 int AddSymbol(char *name, Elf64_Addr vaddr, Elf64_Sym *sym, elfbin_t *target)
 {
 	/* target is target bin with obj code added */
-	printf("[+] Add symbol: %s, vaddr 0x%08x\n", name, vaddr);
+	printf("[+] Add symbol: %s, vaddr 0x%08lx\n", name, vaddr);
 	int i, symsiz = sizeof(Elf64_Sym);
 	int fd, st_index;
 	Elf64_Off symoff;
@@ -30,7 +30,6 @@ int AddSymbol(char *name, Elf64_Addr vaddr, Elf64_Sym *sym, elfbin_t *target)
 
 	char *TargetStbl = &target->mem[target->shdr[target->ehdr->e_shstrndx].sh_offset];
 
-	mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	if ((fd = open(TMP_FILE, O_CREAT | O_WRONLY | O_TRUNC, target->st.st_mode)) == -1)
 	{
 		perror("open TMP_FILE");
@@ -41,7 +40,7 @@ int AddSymbol(char *name, Elf64_Addr vaddr, Elf64_Sym *sym, elfbin_t *target)
 	/* adjust symbol table */
 	/* add sizeof sym struct to symtab sh_size */
 	sym->st_value = vaddr;
-	printf("[+] Sym vaddr: 0x%08x\n", vaddr);
+	printf("[+] Sym vaddr: 0x%08lx\n", vaddr);
 	for (i = 0; i < target->ehdr->e_shnum; i++)
 		if (target->shdr[i].sh_type == SHT_SYMTAB)
 		{
@@ -49,7 +48,7 @@ int AddSymbol(char *name, Elf64_Addr vaddr, Elf64_Sym *sym, elfbin_t *target)
 			target->shdr[i].sh_size += symsiz;
 			while (i++ < target->ehdr->e_shnum) {
 				target->shdr[i].sh_offset += symsiz;
-				printf("[+] Sym Offset: 0x%08x\n", target->shdr[i].sh_offset);
+				printf("[+] Sym Offset: 0x%08lx\n", target->shdr[i].sh_offset);
 			}
 		}
 
@@ -185,7 +184,7 @@ Elf64_Sym *GetSymByName(char *name, Elf64_Shdr *shdr, int c, uint8_t *objmem)
 			{
 				if (strcmp(&SymStrTable[symtab->st_name], name) == 0)
 				{
-					printf("[+] Found symtab: %s addr: 0x%08x\n", name, symtab);
+					printf("[+] Found symtab: %s addr: 0x%08lx\n", name, symtab);
 					return symtab;
 				}
 			}
